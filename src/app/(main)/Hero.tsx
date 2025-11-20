@@ -88,7 +88,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroBg }) => {
         {/* Heading */}
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white drop-shadow-lg">
           Explore the World <br />
-          of <span className="text-white">{typedWord}</span>
+          of <span className="text-orange-500">{typedWord}</span>
           <span className="animate-blink">|</span>
         </h1>
 
