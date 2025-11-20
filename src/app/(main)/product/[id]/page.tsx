@@ -29,89 +29,98 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
   return (
     <div className="container mx-auto px-4 py-8 md:py-12">
-      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 lg:gap-12">
-        {/* Left Column - Gallery */}
-        <div className="lg:col-span-3">
-          <Carousel className="w-full">
-            <CarouselContent>
-              <CarouselItem>
-                <div className="aspect-video relative overflow-hidden rounded-lg border-2 border-accent/30">
-                  <Image src={product.imageUrl} alt={product.name} fill className="object-cover" data-ai-hint="product image" />
-                </div>
-              </CarouselItem>
-              {product.gallery.map((img, index) => (
-                <CarouselItem key={index}>
-                    <div className="aspect-video relative overflow-hidden rounded-lg border-2 border-accent/30">
-                        <Image src={img} alt={`${product.name} - image ${index + 2}`} fill className="object-cover" data-ai-hint="product screenshot" />
-                    </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="ml-16" />
-            <CarouselNext className="mr-16" />
-          </Carousel>
-        </div>
+      <div className="space-y-6">
+        {/* Header Section - Icon, Name, Developer, Category */}
+<div className="flex flex-col-reverse md:flex-row items-center gap-4">
 
-        {/* Right Column - Details & Purchase */}
-        <div className="lg:col-span-2">
-          <div className="sticky top-24 space-y-6">
-            <Badge variant="outline">{product.category}</Badge>
-            <h1 className="text-4xl font-bold tracking-tight">{product.name}</h1>
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-1">
-                <Icons.Star className="w-5 h-5 text-primary" />
-                <span className="font-bold text-lg">{product.rating}</span>
-                <span className="text-muted-foreground">({product.reviewCount} reviews)</span>
+          <div className="flex-1">
+            <h1 className="text-3xl md:text-6xl font-bold tracking-tight">{product.name}</h1>
+            {seller && (
+              <p className="text-lg text-muted-foreground mt-1">by {seller.name}</p>
+            )}
+            <Badge variant="outline" className="mt-2">{product.category}</Badge>
+
+            {/* Stats Section - Downloads, Reviews, Rating */}
+            <div className="flex flex-wrap gap-6 mt-6">
+              <div className="flex flex-col items-center bg-card p-4 rounded-xl shadow-md w-32">
+                <p className="text-2xl font-bold">12.3k</p>
+                <span className="text-sm text-muted-foreground">Downloads</span>
+              </div>
+              <div className="flex flex-col items-center bg-card p-4 rounded-xl shadow-md w-32">
+                <p className="text-2xl font-bold">320</p>
+                <span className="text-sm text-muted-foreground">Reviews</span>
+              </div>
+              <div className="flex flex-col items-center bg-card p-4 rounded-xl shadow-md w-32">
+                <p className="text-2xl font-bold">4.8</p>
+                <span className="text-sm text-muted-foreground">Rating</span>
               </div>
             </div>
-            
-            <p className="text-lg text-muted-foreground">{product.description}</p>
-            
-            <Card className="bg-card/80 border-2 border-primary/30 shadow-neon-green">
-              <CardContent className="p-6">
-                <div className="flex justify-between items-center">
-                  <p className="text-4xl font-bold font-mono text-primary">${product.price.toFixed(2)}</p>
-                </div>
-                <div className="mt-6 grid grid-cols-2 gap-4">
-                  <Button size="lg" variant="futuristic" className="w-full">
-                    <Icons.ShoppingCart className="mr-2 h-5 w-5"/> Add to Cart
-                  </Button>
-                  <Button size="lg" variant="default" className="w-full">Buy Now</Button>
-                </div>
-              </CardContent>
-            </Card>
+          </div>
+          {seller && (
+            <Avatar className="h-60 w-60 border-2 border-accent/50">
+              <AvatarImage src={seller.avatarUrl} alt={seller.name} data-ai-hint="person portrait" />
+              <AvatarFallback>{seller.name.charAt(0)}</AvatarFallback>
+            </Avatar>
+          )}
+        </div>
 
-            {seller && (
-              <Card className="bg-card">
-                  <CardContent className="p-4 flex items-center gap-4">
-                      <Avatar className="h-16 w-16 border-2 border-accent/50">
-                          <AvatarImage src={seller.avatarUrl} alt={seller.name} data-ai-hint="person portrait" />
-                          <AvatarFallback>{seller.name.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                          <p className="text-sm text-muted-foreground">Sold by</p>
-                          <p className="font-semibold text-lg text-accent">{seller.name}</p>
-                      </div>
-                  </CardContent>
-              </Card>
-            )}
+
+        {/* Ratings */}
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-1">
+            <Icons.Star className="w-5 h-5 text-primary" />
+            <span className="font-bold text-lg">{product.rating}</span>
+            <span className="text-muted-foreground">({product.reviewCount} reviews)</span>
           </div>
         </div>
+
+        {/* Description */}
+        <p className="text-lg text-muted-foreground">{product.description}</p>
+
+        {/* Purchase Buttons */}
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
+          <Button size="lg" variant="futuristic" className="w-full">
+            <Icons.ShoppingCart className="mr-2 h-5 w-5" /> View Demo
+          </Button>
+          <Button size="lg" variant="default" className="w-full">Buy Now - ${product.price.toFixed(2)}</Button>
+        </div>
+
+        {/* Gallery Carousel */}
+        <Carousel className="w-full mt-8">
+          <CarouselContent className="-ml-2 md:-ml-4">
+            <CarouselItem className="pl-2 md:pl-4 basis-3/4 md:basis-1/2 lg:basis-1/3">
+              <div className="aspect-video relative overflow-hidden rounded-lg border-2 border-accent/30">
+                <Image src={product.imageUrl} alt={product.name} fill className="object-cover" data-ai-hint="product image" />
+              </div>
+            </CarouselItem>
+            {product.gallery.map((img, index) => (
+              <CarouselItem key={index} className="pl-2 md:pl-4 basis-3/4 md:basis-1/2 lg:basis-1/3">
+                <div className="aspect-video relative overflow-hidden rounded-lg border-2 border-accent/30">
+                  <Image src={img} alt={`${product.name} - image ${index + 2}`} fill className="object-cover" data-ai-hint="product screenshot" />
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="left-4" />
+          <CarouselNext className="right-4" />
+        </Carousel>
       </div>
 
       {/* Lower Section - Features, Reviews, Related */}
-      <div className="mt-12 lg:mt-16">
-        <h2 className="text-2xl font-bold mb-4">Features</h2>
-        <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
+      <div className="mt-12 lg:mt-16 space-y-12">
+        <div>
+          <h2 className="text-2xl font-bold mb-4">Features</h2>
+          <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
             {product.features.map((feature, index) => (
-                <li key={index} className="flex items-center gap-3">
-                    <Icons.CheckCircle className="h-5 w-5 text-primary" />
-                    <span className="text-foreground/80">{feature}</span>
-                </li>
+              <li key={index} className="flex items-center gap-3">
+                <Icons.CheckCircle className="h-5 w-5 text-primary" />
+                <span className="text-foreground/80">{feature}</span>
+              </li>
             ))}
-        </ul>
-        
-        <div className="mt-12 lg:mt-16">
+          </ul>
+        </div>
+
+        <div>
           <h2 className="text-2xl font-bold mb-6">Reviews & Ratings</h2>
           <div className="space-y-6">
             {productReviews.map(review => {
@@ -144,8 +153,8 @@ export default function ProductPage({ params }: { params: { id: string } }) {
         </div>
 
         {relatedProducts.length > 0 && (
-          <div className="mt-12 lg:mt-16">
-            <h2 className="text-2xl font-bold mb-6">Related Products</h2>
+          <div>
+            <h2 className="text-2xl font-bold mb-6">Similar Products</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {relatedProducts.map(p => <ProductCard key={p.id} product={p} />)}
             </div>

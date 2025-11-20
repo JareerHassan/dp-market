@@ -1,3 +1,7 @@
+"use client"
+
+import React, { useState, useEffect, useRef } from "react";
+
 import { products, categories } from '@/lib/dummy-data';
 import { ProductCard } from '@/components/product-card';
 import { Input } from '@/components/ui/input';
@@ -12,15 +16,61 @@ import {
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+const dynamicWords = ["Templates", "AI Bots", "Datasets", "Models", "Prompts"];
 
 export default function ExplorePage() {
+
+   const [typedWord, setTypedWord] = useState("");
+    const [currentWordIndex, setCurrentWordIndex] = useState(0);
+    const [forward, setForward] = useState(true);
+    const [isFocused, setIsFocused] = useState(false);
+  
+    const typingRef = useRef<NodeJS.Timeout | null>(null);
+  
+    // Typing + wait + untyping effect
+    useEffect(() => {
+      const currentWord = dynamicWords[currentWordIndex];
+      let charIndex = forward ? 0 : currentWord.length;
+  
+      const type = () => {
+        if (forward) {
+          if (charIndex <= currentWord.length) {
+            setTypedWord(currentWord.slice(0, charIndex));
+            charIndex++;
+            if (charIndex > currentWord.length) {
+              // Wait before untyping
+              typingRef.current = setTimeout(() => setForward(false), 1000);
+            } else {
+              typingRef.current = setTimeout(type, 150);
+            }
+          }
+        } else {
+          if (charIndex >= 0) {
+            setTypedWord(currentWord.slice(0, charIndex));
+            charIndex--;
+            if (charIndex < 0) {
+              setForward(true);
+              setCurrentWordIndex((prev) => (prev + 1) % dynamicWords.length);
+            }
+            typingRef.current = setTimeout(type, 100);
+          }
+        }
+      };
+  
+      type();
+  
+      return () => {
+        if (typingRef.current) clearTimeout(typingRef.current);
+      };
+    }, [currentWordIndex, forward]);
   return (
     <div className="container mx-auto px-4 py-8 md:py-12">
       <header className="text-center mb-12">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Explore the AI Universe</h1>
-        <p className="mt-3 max-w-2xl mx-auto text-lg text-muted-foreground">
-          Find the perfect AI assets to power your next project.
-        </p>
+         <h1 className="text-6xl font-extrabold tracking-tight text-white drop-shadow-lg">
+          Explore the World <br />
+          of <span className="text-orange-500">{typedWord}</span>
+          <span className="animate-blink">|</span>
+        </h1>
         <div className="mt-8 max-w-2xl mx-auto flex items-center relative">
           <Input
             type="search"

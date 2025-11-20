@@ -3,41 +3,84 @@
 @tailwind utilities;
 
 @layer base {
-  :root,
+  :root {
+    /* ===== LIGHT MODE USING YOUR PALETTE ===== */
+
+    --background: 0 0% 100%;       /* white UI for light mode */
+    --foreground: 266 33% 6%;      /* #0e0918 text */
+
+    --card: 0 0% 100%;
+    --card-foreground: 266 33% 6%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 266 33% 6%;
+
+    --primary: 16 99% 53%;         /* #fe4411 */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 257 17% 22%;      /* #2b2737 */
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 257 15% 85%;
+    --muted-foreground: 257 17% 22%;
+
+    --accent: 16 99% 53%;          /* #fe4411 */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 75% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 257 10% 85%;
+    --input: 257 10% 85%;
+    --ring: 16 99% 53%;
+
+    /* Chart Colors (Light Mode) */
+    --chart-1: 16 99% 53%;      /* orange */
+    --chart-2: 257 17% 22%;     /* charcoal */
+    --chart-3: 266 33% 6%;      /* deep charcoal */
+    --chart-4: 0 0% 100%;       /* white */
+    --chart-5: 16 90% 40%;      /* deep orange */
+
+    --radius: 0.5rem;
+  }
+
   .dark {
-    --background: 220 43% 4%; /* #05070D */
-    --foreground: 210 20% 80%;
+    /* ===== DARK MODE USING YOUR PALETTE ===== */
 
-    --card: 228 38% 6%; /* #0A0F1F */
-    --card-foreground: 210 20% 80%;
+    --background: 266 33% 6%;      /* #0e0918 */
+    --foreground: 0 0% 100%;       /* white */
 
-    --popover: 220 43% 4%;
-    --popover-foreground: 210 20% 80%;
+    --card: 257 17% 22%;           /* #2b2737 */
+    --card-foreground: 0 0% 100%;
 
-    --primary: 120 61% 50%; /* #32CD32 - cyber lime green */
-    --primary-foreground: 120 80% 5%;
+    --popover: 266 33% 6%;
+    --popover-foreground: 0 0% 100%;
 
-    --secondary: 228 20% 18%;
-    --secondary-foreground: 210 20% 80%;
+    --primary: 16 99% 53%;         /* bright orange */
+    --primary-foreground: 0 0% 100%;
 
-    --muted: 228 15% 15%;
-    --muted-foreground: 210 15% 55%;
+    --secondary: 257 17% 22%;      /* charcoal */
+    --secondary-foreground: 0 0% 100%;
 
-    --accent: 182 100% 74%; /* #7DF9FF - electric cyan */
-    --accent-foreground: 182 100% 10%;
+    --muted: 257 15% 18%;
+    --muted-foreground: 0 0% 80%;
 
-    --destructive: 0 63% 31%;
+    --accent: 16 99% 53%;          /* orange accent */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 63% 45%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 182 50% 30%;
-    --input: 228 20% 12%;
-    --ring: 120 70% 60%;
+    --border: 257 15% 28%;
+    --input: 257 15% 22%;
+    --ring: 16 99% 53%;
 
-    --chart-1: 120 61% 50%;
-    --chart-2: 182 100% 74%;
-    --chart-3: 270 70% 60%;
-    --chart-4: 43 74% 66%;
-    --chart-5: 27 87% 67%;
+    /* Chart Colors (Dark Mode) */
+    --chart-1: 16 99% 53%;     /* orange */
+    --chart-2: 0 0% 100%;      /* white */
+    --chart-3: 257 17% 50%;    /* mid charcoal */
+    --chart-4: 257 17% 35%;    /* darker charcoal */
+    --chart-5: 16 90% 40%;     /* deep orange */
 
     --radius: 0.5rem;
   }
@@ -49,7 +92,11 @@
   }
   body {
     @apply bg-background text-foreground;
-    background-image: radial-gradient(circle at 1px 1px, hsl(var(--border) / 0.1) 1px, transparent 0);
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      hsl(var(--border) / 0.1) 1px,
+      transparent 0
+    );
     background-size: 2rem 2rem;
   }
   h1, h2, h3, h4, h5, h6 {
