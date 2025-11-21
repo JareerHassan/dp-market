@@ -18,7 +18,7 @@ interface HeroSectionProps {
 }
 
 const dynamicWords = ["Templates", "AI Bots", "Datasets", "Models", "Prompts"];
-const quickCategories = ["ChatGPT Bot", "AI Writer",  "AI Templates", "Data Models", "Prompt Library"];
+const quickCategories = ["ChatGPT Bot", "AI Writer", "AI Templates", "Data Models", "Prompt Library"];
 
 const HeroSection: React.FC<HeroSectionProps> = ({ heroBg }) => {
   const background = heroBg || PlaceHolderImages.find((p) => p.id === "hero-background");
@@ -27,6 +27,8 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroBg }) => {
   const [typedWord, setTypedWord] = useState("");
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [forward, setForward] = useState(true);
+
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   const typingRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -67,15 +69,25 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroBg }) => {
 
   return (
     <section className="relative w-full h-[60vh] md:h-[80vh] flex flex-col items-center justify-center text-center overflow-hidden">
-      {/* Background */}
+
+      {/* ---------- BG LOADER (Skeleton) ---------- */}
+      <div
+        className={`absolute inset-0 bg-zinc-900/60 animate-pulse transition-opacity duration-700 ${
+          imgLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
+        }`}
+      />
+
+      {/* ---------- BACKGROUND IMAGE ---------- */}
       {background && (
         <Image
           src={background.imageUrl}
           alt={background.description}
           fill
-          className="object-cover brightness-90 contrast-110 scale-105 animate-zoomSlow"
-          data-ai-hint={background.imageHint}
           priority
+          onLoadingComplete={() => setImgLoaded(true)}
+          className={`object-cover brightness-90 contrast-110 scale-105 animate-zoomSlow transition-opacity duration-700 ${
+            imgLoaded ? "opacity-100" : "opacity-0"
+          }`}
         />
       )}
 
@@ -85,7 +97,6 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroBg }) => {
 
       {/* Content */}
       <div className="relative z-10 container px-4 md:px-6 flex flex-col items-center">
-        {/* Heading */}
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white drop-shadow-lg">
           Explore the World <br />
           of <span className="text-orange-500">{typedWord}</span>
@@ -106,7 +117,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroBg }) => {
           <Icons.Search className="absolute left-5 top-1/2 -translate-y-1/2 h-6 w-6 text-purple-300/80" />
         </div>
 
-        {/* Quick Categories / Badges */}
+        {/* Quick Categories */}
         <div className="mt-4 flex flex-wrap justify-center gap-2">
           {quickCategories.map((cat, i) => (
             <span
@@ -120,10 +131,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroBg }) => {
         </div>
       </div>
 
-      {/* Extra Visual Flair */}
+      {/* Extra Flair */}
       <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-[150vw] h-[150vw] rounded-full bg-purple-600/10 blur-3xl animate-pulseSlow" />
 
-      {/* Animations */}
       <style jsx>{`
         @keyframes zoomSlow {
           0% { transform: scale(1); }
