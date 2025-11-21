@@ -33,6 +33,8 @@ import {
   ArrowRight,
   Sun,
   Moon,
+  Send,
+  User,
   type LucideProps,
 } from 'lucide-react';
 import type { ForwardRefExoticComponent, RefAttributes } from 'react';
@@ -74,6 +76,8 @@ export const Icons = {
   ArrowRight,
   Sun,
   Moon,
+  Send,
+  User,
   Logo: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

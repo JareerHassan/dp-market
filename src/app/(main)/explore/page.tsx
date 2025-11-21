@@ -66,7 +66,7 @@ export default function ExplorePage() {
   return (
     <div className="container mx-auto px-4 py-8 md:py-12">
       <header className="text-center mb-12">
-         <h1 className="text-6xl font-extrabold tracking-tight text-white drop-shadow-lg">
+         <h1 className="text-6xl font-extrabold tracking-tight drop-shadow-lg">
           Explore the World <br />
           of <span className="text-orange-500">{typedWord}</span>
           <span className="animate-blink">|</span>
@@ -122,7 +122,7 @@ export default function ExplorePage() {
                ))}
             </div>
 
-            <Button variant="futuristic" className="w-full">Apply Filters</Button>
+            <Button variant="ghost" className="w-full border">Apply Filters</Button>
 
           </div>
         </aside>

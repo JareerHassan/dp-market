@@ -55,10 +55,10 @@ export default function DashboardSidebar({ userType }: DashboardSidebarProps) {
           return (
             <Link key={item.href} href={item.href}>
               <Button
-                variant={isActive ? 'futuristic' : 'ghost'}
+                variant={isActive ? 'default' : 'ghost'}
                 className={cn(
                   'w-full justify-start',
-                  isActive ? 'text-accent-foreground' : 'text-foreground/70'
+                  isActive ? 'text-accent-foreground' : 'text-orange-500'
                 )}
               >
                 <Icon className="mr-3 h-5 w-5" />
@@ -69,7 +69,7 @@ export default function DashboardSidebar({ userType }: DashboardSidebarProps) {
         })}
       </nav>
       <div className="p-4 mt-auto border-t border-border/40">
-        <Button variant="ghost" className="w-full justify-start text-foreground/70">
+        <Button variant="ghost" className="w-full justify-start text-foreground/70 border text-orange-500">
           <Icons.LogOut className="mr-3 h-5 w-5" />
           Logout
         </Button>

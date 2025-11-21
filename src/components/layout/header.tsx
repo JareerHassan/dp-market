@@ -123,7 +123,7 @@ export default function Header() {
               </Button>
             </Link>
             <Link href="/auth/signup">
-              <Button variant="futuristic" size="sm">
+              <Button variant="ghost" size="sm">
                 Sign Up
               </Button>
             </Link>

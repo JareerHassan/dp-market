@@ -104,7 +104,7 @@ export default function HoverProductCards() {
                     Explore powerful tools crafted for creators & developers.
                 </p>
 
-                <div className="mt-16 container  grid justify-center grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-y-20 gap-x-10 mx-auto">
+                <div className="mt-16 container  grid justify-center grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-y-20 gap-x-6 mx-auto">
 
                     {products.map((product, i) => (
                         <HoverCard key={product.id} product={product} index={i} />
@@ -131,7 +131,7 @@ function HoverCard({
     return (
         <div
             onClick={() => router.push(`/product/${product.id}`)}
-            className={`cursor-pointer rounded-2xl border border-gray-800 bg-gray-900 hover:border-gray-600 transition p-4 transform ${stagger}`}
+            className={`cursor-pointer rounded-2xl border border-gray-800 bg-gray-900 hover:border-gray-600 hover:translate-y-[-30px] transition p-4 transform ${stagger}`}
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
         >

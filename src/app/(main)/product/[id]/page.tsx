@@ -79,7 +79,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 
         {/* Purchase Buttons */}
         <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
-          <Button size="lg" variant="futuristic" className="w-full">
+          <Button size="lg" variant="ghost" className="w-full border">
             <Icons.ShoppingCart className="mr-2 h-5 w-5" /> View Demo
           </Button>
           <Button size="lg" variant="default" className="w-full">Buy Now - ${product.price.toFixed(2)}</Button>
