@@ -95,16 +95,17 @@ export default function HoverProductCards() {
     ];
 
     return (
-        <section className="py-16 md:py-24">
+        <section className="py-16">
             <div className=" px-4 md:px-6">
-                <h2 className="text-3xl font-bold tracking-tight text-center">
+                <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 bg-clip-text text-transparent">
                     Trending AI Tools
                 </h2>
-                <p className="mt-2 text-center text-muted-foreground">
+
+                <p className="mt-2  text-muted-foreground">
                     Explore powerful tools crafted for creators & developers.
                 </p>
 
-                <div className="mt-16 container  grid justify-center grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-y-20 gap-x-6 mx-auto">
+                <div className="mt-16 container  grid justify-start grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-y-20 gap-x-6 ">
 
                     {products.map((product, i) => (
                         <HoverCard key={product.id} product={product} index={i} />

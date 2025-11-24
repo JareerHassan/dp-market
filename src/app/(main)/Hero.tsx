@@ -72,24 +72,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroBg }) => {
 
       {/* ---------- BG LOADER (Skeleton) ---------- */}
       <div
-        className={`absolute inset-0 bg-zinc-900/60 animate-pulse transition-opacity duration-700 ${
-          imgLoaded ? "opacity-0 pointer-events-none" : "opacity-100"
-        }`}
+        className="absolute inset-0 bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 transition-opacity duration-700"
       />
 
-      {/* ---------- BACKGROUND IMAGE ---------- */}
-      {background && (
-        <Image
-          src={background.imageUrl}
-          alt={background.description}
-          fill
-          priority
-          onLoadingComplete={() => setImgLoaded(true)}
-          className={`object-cover brightness-90 contrast-110 scale-105 animate-zoomSlow transition-opacity duration-700 ${
-            imgLoaded ? "opacity-100" : "opacity-0"
-          }`}
-        />
-      )}
+
 
       {/* Overlays */}
       <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
@@ -99,7 +85,10 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroBg }) => {
       <div className="relative z-10 container px-4 md:px-6 flex flex-col items-center">
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white drop-shadow-lg">
           Explore the World <br />
-          of <span className="text-orange-500">{typedWord}</span>
+          of <span className="text-amber-400 text-transparent">
+            {typedWord}
+          </span>
+
           <span className="animate-blink">|</span>
         </h1>
 
@@ -110,12 +99,15 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroBg }) => {
             placeholder="Search AI models, prompts, datasets..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full !py-5 !pl-14 text-lg rounded-2xl border border-purple-400/30 bg-purple-900/40 
-            backdrop-blur-md placeholder:text-purple-200/60 text-white 
-            focus:border-purple-500 focus:ring-2 focus:ring-purple-400/40 transition-all"
+            className="w-full !py-6 !pl-14 text-lg rounded-lg bg-gray-800 text-white 
+               placeholder-gray-400 border border-gray-700 
+               
+               shadow-sm transition-all duration-200"
           />
-          <Icons.Search className="absolute left-5 top-1/2 -translate-y-1/2 h-6 w-6 text-purple-300/80" />
+          <Icons.Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
         </div>
+
+
 
         {/* Quick Categories */}
         <div className="mt-4 flex flex-wrap justify-center gap-2">

@@ -6,9 +6,9 @@ export default function AIProductsBanner() {
     <div className="container mx-auto px-4 py-12 md:py-16">
       {/* Header */}
       <header className="mb-12 text-center md:text-left">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-          Explore Our AI Products
-        </h1>
+
+        <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 bg-clip-text text-transparent">Explore Our AI Products</h2>
+
         <p className="mt-3 max-w-2xl text-lg text-muted-foreground mx-auto md:mx-0">
           Discover AI tools designed to boost productivity, creativity, and efficiency for modern users.
         </p>
@@ -28,7 +28,7 @@ export default function AIProductsBanner() {
           <p className="text-muted-foreground">
             Explore our AI products that help you automate tasks, generate content, and enhance creativity.
           </p>
-          <span className="inline-block mt-2 px-4 py-2 bg-primary text-white font-medium rounded-lg shadow-md group-hover:bg-primary/90 transition">
+          <span className="inline-block mt-2 px-4 py-2 bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 text-white font-medium rounded-lg shadow-md group-hover:bg-primary/90 transition">
             Explore AI Products
           </span>
         </Link>

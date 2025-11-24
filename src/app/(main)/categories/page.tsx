@@ -7,7 +7,7 @@ export default function CategoriesPage() {
   return (
     <div className="container mx-auto px-4 py-8 md:py-12">
       <header className="mb-12">
-        <h1 className="text-4xl md:text-5xl font-bold tracking-tight">Product Categories</h1>
+        <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 bg-clip-text text-transparent tracking-tight">Product Categories</h1>
         <p className="mt-3 max-w-2xl  text-lg text-muted-foreground">
           Browse assets by category to find the perfect tool for your needs.
         </p>
@@ -19,7 +19,7 @@ export default function CategoriesPage() {
           return (
             <Link key={category.id} href={`/explore?category=${category.slug}`} className="group">
               <Card className="p-6 flex  items-center justify-start gap-3 text-center
-                     bg-card border-2 border-transparent hover:border-primary/50 transition-all duration-300">
+                     bg-gray-300 dark:bg-card border-2 border-transparent hover:border-primary/50 transition-all duration-300">
                       <IconComponent className="h-20 w-20 text-white bg-gray-500 border shadow rounded-xl
                        p-4  transition-transform" />
                       <h3 className="mt-4 text-lg font-semibold">{category.name}</h3>
