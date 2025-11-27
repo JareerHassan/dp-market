@@ -14,7 +14,7 @@ type ProductCardProps = {
 
 export function ProductCard({ product, className }: ProductCardProps) {
   return (
-    <Card className={cn("group relative flex flex-col overflow-hidden border-2 border-transparent bg-gray-900 hover:border-accent/50 transition-all duration-300", className)}>
+    <Card className={cn("group relative flex flex-col overflow-hidden border-2 border-transparent dark:bg-gray-900 hover:border-accent/50 transition-all duration-300", className)}>
         <CardHeader className="p-0">
           <Link href={`/product/${product.id}`} className="block">
             <div className="relative aspect-video">
