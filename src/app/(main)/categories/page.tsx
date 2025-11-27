@@ -18,7 +18,7 @@ export default function CategoriesPage() {
           const IconComponent = Icons[category.icon as keyof typeof Icons];
           return (
             <Link key={category.id} href={`/explore?category=${category.slug}`} className="group">
-              <Card className="p-6 flex  items-center justify-start gap-3 text-center
+              <Card className="p-6 flex  flex-wrap  items-center justify-start gap-3 text-center
                      bg-gray-300 dark:bg-gray-900 border-2 border-transparent hover:border-primary/50 transition-all duration-300">
                       <IconComponent className="h-20 w-20 text-white bg-gray-500 border shadow rounded-xl
                        p-4  transition-transform" />
