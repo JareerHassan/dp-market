@@ -68,90 +68,65 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroBg }) => {
   }, [currentWordIndex, forward]);
 
   return (
-    <section className="relative w-full h-[60vh] md:h-[80vh] flex flex-col items-center justify-center text-center overflow-hidden">
-
-      {/* ---------- BG LOADER (Skeleton) ---------- */}
-      <div
-        className="absolute inset-0 bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 transition-opacity duration-700"
-      />
-
-
-
-      {/* Overlays */}
-      <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent" />
-      <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" />
+    <section className="w-full  flex flex-col items-center justify-center text-center px-4 relative">
 
       {/* Content */}
-      <div className="relative z-10 container px-4 md:px-6 flex flex-col items-center">
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight text-white drop-shadow-lg">
+      <div className="relative z-10 max-w-3xl pb-24 pt-32"
+      >
+        <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight drop-shadow-lg">
           Explore the World <br />
-          of <span className="text-amber-400 text-transparent">
-            {typedWord}
-          </span>
-
+          of <span className="text-orange-500">{typedWord}</span>
           <span className="animate-blink">|</span>
         </h1>
 
-        {/* Search Input */}
-        <div className="mt-10 relative w-full max-w-2xl">
+        {/* Search */}
+        <div className="mt-8 relative">
           <Input
             type="text"
             placeholder="Search AI models, prompts, datasets..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full !py-6 !pl-14 text-lg rounded-lg bg-gray-800 text-white 
-               placeholder-gray-400 border border-gray-700 
-               
-               shadow-sm transition-all duration-200"
+            className="w-full py-6 pr-12 text-lg focus:shadow-none  rounded-lg border border-gray-700 placeholder-gray-300 focus:border-orange-500 focus:ring-0 dark:bg-gray-700/50"
           />
-          <Icons.Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+
+
+          <Icons.Search className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+
         </div>
 
 
-
-        {/* Quick Categories */}
-        <div className="mt-4 flex flex-wrap justify-center gap-2">
-          {quickCategories.map((cat, i) => (
-            <span
-              key={i}
+        {/* Categories */}
+        <div className="mt-8 flex flex-wrap justify-center gap-2">
+          {quickCategories.map((cat) => (
+            <button
+              key={cat}
               onClick={() => setSearchTerm(cat)}
-              className="px-3 py-1 text-sm font-medium rounded-full bg-gray-800 text-gray-200 cursor-pointer hover:bg-gray-700 transition"
+              className="px-3 py-1 text-sm border border-1 border-gray-700 rounded-lg  dark:bg-transparent dark:hover:bg-[#3c1511] hover:border-orange-500 transition-all duration-300"
             >
               {cat}
-            </span>
+            </button>
           ))}
         </div>
       </div>
 
-      {/* Extra Flair */}
-      <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 w-[150vw] h-[150vw] rounded-full bg-purple-600/10 blur-3xl animate-pulseSlow" />
+      <div
+        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[120vw] blur-3xl rounded-full"
+        style={{
+          background: "var(--bg-gradient)",
+        }}
+      />
+
 
       <style jsx>{`
-        @keyframes zoomSlow {
-          0% { transform: scale(1); }
-          50% { transform: scale(1.02); }
-          100% { transform: scale(1); }
-        }
-        .animate-zoomSlow {
-          animation: zoomSlow 15s ease-in-out infinite;
-        }
+    .animate-blink {
+      animation: blink 1s step-start infinite;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+  `}</style>
+    </section >
 
-        @keyframes pulseSlow {
-          0%, 100% { opacity: 0.3; }
-          50% { opacity: 0.6; }
-        }
-        .animate-pulseSlow {
-          animation: pulseSlow 8s ease-in-out infinite;
-        }
-
-        .animate-blink {
-          animation: blink 1s step-start infinite;
-        }
-        @keyframes blink {
-          50% { opacity: 0; }
-        }
-      `}</style>
-    </section>
   );
 };
 

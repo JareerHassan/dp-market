@@ -10,19 +10,20 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import HeroSection from './Hero';
 import HoverProductCards from './HoverProductCards';
 import AIBanner from './AIBannerPage';
+import AgentControlSection from "./AIAgentsComponent"
 export default function HomePage() {
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen   ">
       <main className="flex-1">
         {/* Hero Section */}
         <HeroSection />
         <HoverProductCards />
 
         {/* Trending Categories */}
-        <section className="py-16 bg-card/50">
+        <section className="py-16 mx-auto container">
           <div className="container px-4 md:px-6">
-            <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 bg-clip-text text-transparent">
+            <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-orange-500 via-pink-500 to-purple-200 bg-clip-text text-transparent">
               Trending Categories
             </h2>
             <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
@@ -31,7 +32,7 @@ export default function HomePage() {
                 return (
                   <Link key={category.id} href={`/categories?category=${category.slug}`} className="group">
                     <Card className="p-6 flex  items-center justify-start gap-3 text-center
-                     bg-gray-300 dark:bg-card border-2 border-transparent hover:border-primary/50 transition-all duration-300">
+                     bg-gray-300 dark:bg-gray-900 border-2 border-transparent hover:border-primary/50 transition-all duration-300">
                       <IconComponent className="h-20 w-20 text-white bg-gray-500 border shadow rounded-xl
                        p-4  transition-transform" />
                       <h3 className="mt-4 text-lg font-semibold">{category.name}</h3>
@@ -43,9 +44,9 @@ export default function HomePage() {
           </div>
         </section>
         {/* Featured Products */}
-        <section className="py-16">
+        <section className="py-16 mx-auto container">
           <div className=" px-4 md:px-6">
-            <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-amber-400 via-orange-500 to-red-600 bg-clip-text text-transparent">Featured AI Tools</h2>
+            <h2 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-orange-500 via-pink-500 to-purple-200 bg-clip-text text-transparent">Featured AI Tools</h2>
             <p className="mt-2 text-muted-foreground">Hand-picked assets from the Neural Nexus ecosystem.</p>
             <div className="mt-12 container  grid justify-center grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-10">
               {products.slice(0, 3).map((product) => (
@@ -54,17 +55,19 @@ export default function HomePage() {
             </div>
             <div className="mt-12 text-center">
               <Link href="/explore">
-                <Button className='bg-gradient-to-r from-amber-400 via-orange-500 to-red-600' variant="outline" size="lg">
+                <Button className='bg-gradient-to-r from-orange-500 via-pink-500 to-purple-200' variant="outline" size="lg">
                   Explore All Products <Icons.ArrowRight className="ml-2 h-4 w-4" />
                 </Button>
               </Link>
             </div>
           </div>
         </section>
+
+        <AgentControlSection />
         <AIBanner />
 
         {/* How It Works */}
-        <section className="py-16 md:py-24">
+        <section className="py-16 md:py-24 mx-auto container">
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tight text-center">How It Works</h2>
             <div className="mt-12 grid md:grid-cols-2 gap-12">
@@ -87,7 +90,7 @@ export default function HomePage() {
         </section>
 
         {/* Testimonials */}
-        <section className="py-16 md:py-24 bg-card/50">
+        <section className="py-16 md:py-24 bg-card/50 mx-auto container">
           <div className="container px-4 md:px-6">
             <h2 className="text-3xl font-bold tracking-tight text-center">From the Community</h2>
             <div className="mt-12 grid grid-cols-1 md:grid-cols-3 gap-8">

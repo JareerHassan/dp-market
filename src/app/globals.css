@@ -4,102 +4,152 @@
 
 @layer base {
   :root {
-    /* ===== LIGHT MODE USING YOUR PALETTE ===== */
-
-    --background: 0 0% 100%;       /* white UI for light mode */
-    --foreground: 266 33% 6%;      /* #0e0918 text */
+    /* ===== LIGHT MODE — n8n COLORS ===== */
+    --bg-gradient: radial-gradient(circle at top left,
+        #fff0f5 0%,
+        /* very light pink */
+        #ffeaea 40%,
+        /* soft warm tone */
+        #f0e0e5 70%,
+        /* muted pastel */
+        #fff5f8 100%
+        /* near white */
+      );
+    --background: 0 0% 100%;
+    /* white */
+    --foreground: 0 0% 10%;
+    /* very dark gray */
 
     --card: 0 0% 100%;
-    --card-foreground: 266 33% 6%;
+    --card-foreground: 0 0% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 266 33% 6%;
+    --popover-foreground: 0 0% 10%;
 
-    --primary: 16 99% 53%;         /* #fe4411 */
+    /* n8n primary colors */
+    --primary: 11 100% 68%;
+    /* #FF6D5A */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 257 17% 22%;      /* #2b2737 */
+    --secondary: 0 0% 20%;
+    /* soft black */
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 257 15% 85%;
-    --muted-foreground: 257 17% 22%;
+    --muted: 0 0% 90%;
+    --muted-foreground: 0 0% 25%;
 
-    --accent: 16 99% 53%;          /* #fe4411 */
+    --accent: 11 100% 68%;
+    /* #FF6D5A */
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 75% 50%;
+    --destructive: 2 100% 61%;
+    /* #FF4A39 */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 257 10% 85%;
-    --input: 257 10% 85%;
-    --ring: 16 99% 53%;
+    --border: 0 0% 85%;
+    --input: 0 0% 85%;
+    --ring: 11 100% 68%;
+    /* orange */
 
-    /* Chart Colors (Light Mode) */
-    --chart-1: 16 99% 53%;      /* orange */
-    --chart-2: 257 17% 22%;     /* charcoal */
-    --chart-3: 266 33% 6%;      /* deep charcoal */
-    --chart-4: 0 0% 100%;       /* white */
-    --chart-5: 16 90% 40%;      /* deep orange */
+    /* Chart Colors (Light) */
+    --chart-1: 11 100% 68%;
+    /* orange */
+    --chart-2: 285 84% 67%;
+    /* purple #A29BFE */
+    --chart-3: 180 100% 40%;
+    /* teal #00CEC9 */
+    --chart-4: 48 100% 79%;
+    /* yellow #FFEAA7 */
+    --chart-5: 215 100% 73%;
+    /* blue #74B9FF */
 
     --radius: 0.5rem;
   }
 
   .dark {
-    /* ===== DARK MODE USING YOUR PALETTE ===== */
+    /* ===== DARK MODE — n8n COLORS ===== */
+    --bg-gradient: radial-gradient(circle at center,
+        #0e0918 0%,
+        #0e0918 40%,
+        #3c1511 70%,
+        #0e0918 100%);
+    --background: 240 3% 4%;
+    /* #0C0C0D */
+    --foreground: 0 0% 100%;
+    /* white */
 
-    --background: 266 33% 6%;      /* #0e0918 */
-    --foreground: 0 0% 100%;       /* white */
-
-    --card: 257 17% 22%;           /* #2b2737 */
+    --card: 240 3% 10%;
+    /* #1A1A1C */
     --card-foreground: 0 0% 100%;
 
-    --popover: 266 33% 6%;
+    --popover: 240 3% 4%;
     --popover-foreground: 0 0% 100%;
 
-    --primary: 16 99% 53%;         /* bright orange */
+    --primary: 11 100% 68%;
+    /* n8n orange */
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 257 17% 22%;      /* charcoal */
+    --secondary: 240 3% 15%;
+    /* dark charcoal #2E2E30 */
     --secondary-foreground: 0 0% 100%;
 
-    --muted: 257 15% 18%;
-    --muted-foreground: 0 0% 80%;
+    --muted: 240 3% 18%;
+    --muted-foreground: 0 0% 75%;
 
-    --accent: 16 99% 53%;          
+    --accent: 11 100% 68%;
     --accent-foreground: 0 0% 100%;
 
-    --destructive: 0 63% 45%;
+    --destructive: 2 100% 61%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 257 15% 28%;
-    --input: 257 15% 22%;
-    --ring: 16 99% 53%;
+    --border: 240 3% 25%;
+    --input: 240 3% 20%;
+    --ring: 11 100% 68%;
 
-    /* Chart Colors (Dark Mode) */
-    --chart-1: 16 99% 53%;     /* orange */
-    --chart-2: 0 0% 100%;      /* white */
-    --chart-3: 257 17% 50%;    /* mid charcoal */
-    --chart-4: 257 17% 35%;    /* darker charcoal */
-    --chart-5: 16 90% 40%;     /* deep orange */
+    /* Chart Colors (Dark) */
+    --chart-1: 11 100% 68%;
+    --chart-2: 0 0% 100%;
+    --chart-3: 285 84% 67%;
+    --chart-4: 180 100% 40%;
+    --chart-5: 2 100% 61%;
 
     --radius: 0.5rem;
   }
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
   body {
     @apply bg-background text-foreground;
-    background-image: radial-gradient(
-      circle at 1px 1px,
-      hsl(var(--border) / 0.1) 1px,
-      transparent 0
-    );
-    background-size: 2rem 2rem;
+
+    /* Light mode background */
+    background-color: hsl(var(--background));
+    background-image: none;
   }
-  h1, h2, h3, h4, h5, h6 {
+
+  /* Dark mode background gradient */
+  .dark body {
+    background-color: hsl(var(--background));
+    background-image: radial-gradient(circle at top left,
+        #0e0918 0%,
+        #0e0918 40%,
+        #0e0918 70%,
+        #0e0918 100%);
+    background-size: cover;
+    background-attachment: fixed;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-headline;
   }
+}
+
+
+html
+{
+  scroll-behavior: smooth !important;
 }
