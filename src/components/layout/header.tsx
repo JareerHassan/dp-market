@@ -19,6 +19,7 @@ const navLinks = [
   { href: '/categories', label: 'Categories' },
   { href: '/chatbot', label: 'AI Assistant' },
   { href: '/seller/dashboard', label: 'Seller Hub' },
+  { href: '/blogs', label: 'Blogs' },
   { href: '/faq', label: 'FAQ' },
 ];
 
