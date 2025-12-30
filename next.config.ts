@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  
   images: {
     remotePatterns: [
       {
@@ -31,6 +32,18 @@ const nextConfig: NextConfig = {
       {
         protocol: 'https',
         hostname: 'picsum.photos',
+        port: '',
+        pathname: '/**',
+      },
+      {
+      protocol: 'https',
+      hostname: 'dpmarketblogs.oxmite.com', 
+      port: '',
+      pathname: '/**',
+    },
+      {
+        protocol: 'https',
+        hostname: 'marketplacebackend.oxmite.com',
         port: '',
         pathname: '/**',
       },

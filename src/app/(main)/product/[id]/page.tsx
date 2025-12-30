@@ -1,162 +1,150 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { products, users, reviews } from '@/lib/dummy-data';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Icons } from '@/components/icons';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { ProductCard } from '@/components/product-card';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+import Link from 'next/link';
 
-export default function ProductPage({ params }: { params: { id: string } }) {
-  const product = products.find((p) => p.id === params.id);
+interface Product {
+  _id: string;
+  name: string;
+  description: string;
+  image: string;
+  link?: string;
+  features: string[];
+  createdAt: string;
+  updatedAt: string;
+}
 
-  if (!product) {
-    notFound();
-  }
+async function getProduct(id: string): Promise<Product | null> {
+  const res = await fetch(`https://marketplacebackend.oxmite.com/api/products/${id}`, {
+    next: { revalidate: 60 },
+  });
 
-  const seller = users.find((u) => u.id === product.sellerId);
-  const productReviews = reviews.filter((r) => r.productId === product.id);
-  const relatedProducts = products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 3);
+  if (!res.ok) return null;
+  return res.json();
+}
+
+async function getAllProducts(): Promise<Product[]> {
+  const res = await fetch(`https://marketplacebackend.oxmite.com/api/products`, {
+    next: { revalidate: 60 },
+  });
+
+  if (!res.ok) return [];
+  return res.json();
+}
+
+export default async function ProductPage({ params }: { params: { id: string } }) {
+  const [product, allProducts] = await Promise.all([
+    getProduct(params.id),
+    getAllProducts(),
+  ]);
+
+  if (!product) notFound();
+
+  const imageUrl = product.image
+    ? `https://marketplacebackend.oxmite.com/${product.image.replace(/\\/g, '/')}`
+    : '/placeholder.jpg';
+
+const demoLink = product.link
+  ? product.link.trim().startsWith("http")
+    ? product.link.trim()
+    : `https://${product.link.trim()}`
+  : null;
+
+  const relatedProducts = allProducts
+    .filter((p) => p._id !== product._id)
+    .slice(0, 3);
 
   return (
     <div className="container mx-auto px-4 py-8 md:py-12">
-      <div className="space-y-6">
-        {/* Header Section - Icon, Name, Developer, Category */}
-<div className="flex flex-col-reverse md:flex-row items-center gap-4">
+      <Link href='/explore' className="inline-flex mb-5 items-center gap-2 px-5 py-2.5 rounded-xl border border-border hover:border-primary hover:text-primary transition-all duration-300 font-medium">
+        ← Back to Explore
+      </Link>
+      <div className="space-y-8">
+        <div className="grid md:grid-cols-2 gap-8 items-start">
+          {/* Main Image */}
+          <div className="relative aspect-square md:aspect-video overflow-hidden rounded-xl border-2 border-accent/30">
+            <Image
+              src={imageUrl}
+              alt={product.name}
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
 
-          <div className="flex-1">
-            <h1 className="text-3xl md:text-6xl font-bold tracking-tight">{product.name}</h1>
-            {seller && (
-              <p className="text-lg text-muted-foreground mt-1">by {seller.name}</p>
+          {/* Details */}
+          <div className="space-y-6">
+            <div>
+              <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
+                {product.name}
+              </h1>
+             
+            </div>
+
+            <p className="text-lg text-muted-foreground">
+              {product.description || 'No description provided.'}
+            </p>
+
+            {/* Features */}
+            {product.features.length > 0 && (
+              <div>
+                <h2 className="text-2xl font-bold mb-3">Features</h2>
+                <ul className="space-y-2">
+                  {product.features.map((feature, index) => (
+                    <li key={index} className="flex items-center gap-3">
+                      <span className="text-primary font-bold text-lg">✓</span>
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             )}
-            <Badge variant="outline" className="mt-2">{product.category}</Badge>
 
-            {/* Stats Section - Downloads, Reviews, Rating */}
-            <div className="flex flex-wrap gap-6 mt-6">
-              <div className="flex flex-col items-center bg-card p-4 rounded-xl shadow-md w-32">
-                <p className="text-2xl font-bold">12.3k</p>
-                <span className="text-sm text-muted-foreground">Downloads</span>
-              </div>
-              <div className="flex flex-col items-center bg-card p-4 rounded-xl shadow-md w-32">
-                <p className="text-2xl font-bold">320</p>
-                <span className="text-sm text-muted-foreground">Reviews</span>
-              </div>
-              <div className="flex flex-col items-center bg-card p-4 rounded-xl shadow-md w-32">
-                <p className="text-2xl font-bold">4.8</p>
-                <span className="text-sm text-muted-foreground">Rating</span>
-              </div>
+            {/* Actions */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              {demoLink && (
+                <Button size="lg" variant="outline" asChild>
+                  <a href={demoLink} target="_blank" rel="noopener noreferrer">
+                    View Demo / Portfolio
+                  </a>
+                </Button>
+              )}
+              <Button size="lg" variant="default" asChild>
+                <a href="mailto:contact@example.com?subject=Inquiry%20about%20your%20service">
+                  Contact for Pricing
+                </a>
+              </Button>
             </div>
           </div>
-          {seller && (
-            <Avatar className="h-60 w-60 border-2 border-accent/50">
-              <AvatarImage src={seller.avatarUrl} alt={seller.name} data-ai-hint="person portrait" />
-              <AvatarFallback>{seller.name.charAt(0)}</AvatarFallback>
-            </Avatar>
-          )}
         </div>
 
-
-        {/* Ratings */}
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1">
-            <Icons.Star className="w-5 h-5 text-primary" />
-            <span className="font-bold text-lg">{product.rating}</span>
-            <span className="text-muted-foreground">({product.reviewCount} reviews)</span>
-          </div>
-        </div>
-
-        {/* Description */}
-        <p className="text-lg text-muted-foreground">{product.description}</p>
-
-        {/* Purchase Buttons */}
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
-          <Button size="lg" variant="ghost" className="w-full border">
-            <Icons.ShoppingCart className="mr-2 h-5 w-5" /> View Demo
-          </Button>
-          <Button size="lg" variant="default" className="w-full">Buy Now - ${product.price.toFixed(2)}</Button>
-        </div>
-
-        {/* Gallery Carousel */}
-        <Carousel className="w-full mt-8">
-          <CarouselContent className="-ml-2 md:-ml-4">
-            <CarouselItem className="pl-2 md:pl-4 basis-3/4 md:basis-1/2 lg:basis-1/3">
-              <div className="aspect-video relative overflow-hidden rounded-lg border-2 border-accent/30">
-                <Image src={product.imageUrl} alt={product.name} fill className="object-cover" data-ai-hint="product image" />
-              </div>
-            </CarouselItem>
-            {product.gallery.map((img, index) => (
-              <CarouselItem key={index} className="pl-2 md:pl-4 basis-3/4 md:basis-1/2 lg:basis-1/3">
-                <div className="aspect-video relative overflow-hidden rounded-lg border-2 border-accent/30">
-                  <Image src={img} alt={`${product.name} - image ${index + 2}`} fill className="object-cover" data-ai-hint="product screenshot" />
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
-          <CarouselPrevious className="left-4" />
-          <CarouselNext className="right-4" />
-        </Carousel>
-      </div>
-
-      {/* Lower Section - Features, Reviews, Related */}
-      <div className="mt-12 lg:mt-16 space-y-12">
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Features</h2>
-          <ul className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4">
-            {product.features.map((feature, index) => (
-              <li key={index} className="flex items-center gap-3">
-                <Icons.CheckCircle className="h-5 w-5 text-primary" />
-                <span className="text-foreground/80">{feature}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div>
-          <h2 className="text-2xl font-bold mb-6">Reviews & Ratings</h2>
-          <div className="space-y-6">
-            {productReviews.map(review => {
-              const reviewUser = users.find(u => u.id === review.userId);
-              return (
-                <Card key={review.id} className="bg-card">
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4">
-                      <Avatar>
-                        <AvatarImage src={reviewUser?.avatarUrl} alt={reviewUser?.name} data-ai-hint="user avatar" />
-                        <AvatarFallback>{reviewUser?.name.charAt(0)}</AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1">
-                        <div className="flex justify-between items-center">
-                          <p className="font-semibold">{reviewUser?.name}</p>
-                          <div className="flex items-center gap-1">
-                            {Array(5).fill(0).map((_, i) => (
-                              <Icons.Star key={i} className={`w-4 h-4 ${i < review.rating ? 'text-primary' : 'text-muted-foreground/30'}`} />
-                            ))}
-                          </div>
-                        </div>
-                        <p className="text-sm text-muted-foreground mt-2">{review.comment}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              )
-            })}
-          </div>
-        </div>
-
+        {/* Related Services */}
         {relatedProducts.length > 0 && (
-          <div>
-            <h2 className="text-2xl font-bold mb-6">Similar Products</h2>
+          <div className="mt-16">
+            <h2 className="text-3xl font-bold mb-8">Other Services</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {relatedProducts.map(p => <ProductCard key={p.id} product={p} />)}
+              {relatedProducts.map((related) => (
+                <Card key={related._id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                  <a href={`/product/${related._id}`}>
+                    <div className="relative aspect-video">
+                      <Image
+                        src={`https://marketplacebackend.oxmite.com/${related.image.replace(/\\/g, '/')}`}
+                        alt={related.name}
+                        fill
+                        className="object-cover"
+                      />
+                    </div>
+                    <CardContent className="p-6">
+                      <h3 className="text-xl font-semibold">{related.name}</h3>
+                      <p className="text-muted-foreground mt-2 line-clamp-2">
+                        {related.description}
+                      </p>
+                    </CardContent>
+                  </a>
+                </Card>
+              ))}
             </div>
           </div>
         )}
