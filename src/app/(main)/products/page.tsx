@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import React, { useState, useEffect, useRef, useMemo ,Suspense} from "react";
 import axios from "axios";
 import { categories } from "@/lib/dummy-data";
 import { ProductCard } from "@/components/product-card";
@@ -17,6 +17,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useSearchParams } from "next/navigation"; // ← Added this import
+import SearchHandler from "@/components/SearchHandler";
 
 const dynamicWords = ["Templates", "AI Bots", "Datasets", "Models", "Prompts"];
 
@@ -54,14 +55,14 @@ export default function ExplorePage() {
   const [sortBy, setSortBy] = useState("newest");
 
   // ← NEW: Read search query from URL (Next.js App Router)
-  const searchParams = useSearchParams();
-  const urlSearchQuery = searchParams.get("search");
+  // const searchParams = useSearchParams();
+  // const urlSearchQuery = searchParams.get("search");
 
-  useEffect(() => {
-    if (urlSearchQuery && urlSearchQuery.trim() !== "") {
-      setSearchQuery(urlSearchQuery.trim());
-    }
-  }, [urlSearchQuery]);
+  // useEffect(() => {
+  //   if (urlSearchQuery && urlSearchQuery.trim() !== "") {
+  //     setSearchQuery(urlSearchQuery.trim());
+  //   }
+  // }, [urlSearchQuery]);
 
   // Typing Animation Effect
   useEffect(() => {
@@ -222,6 +223,11 @@ export default function ExplorePage() {
   };
 
   return (
+<>
+    <Suspense fallback={null}>
+        <SearchHandler onSearchQueryChange={setSearchQuery} />
+      </Suspense>
+
     <div className="container mx-auto px-4 py-8 md:py-12">
       {/* Hero Header */}
       <header className="text-center mb-12">
@@ -407,5 +413,6 @@ export default function ExplorePage() {
         </main>
       </div>
     </div>
+    </>
   );
 }
