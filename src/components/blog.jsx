@@ -87,7 +87,7 @@ const Blog = () => {
                     </Head>
                     <div className="py-24 px-4 md:px-16 lg:px-32">
                         <div className="max-w-7xl mx-auto">
-                            <h2 className="text-4xl sm:text-5xl text-gray-900 mb-16 border-b-4 border-orange-500/30  pb-4">  Top Pick of the Day</h2>
+                            <h2 className="text-4xl sm:text-5xl text-gray-900 mb-16 border-b-4 border-orange-500  pb-4">  Top Pick of the Day</h2>
                             <Link href={`/${currentLocale}/${featuredPost.slug}`} className="group block">
                                 <div className="bg-white rounded-3xl shadow-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-2 transform transition-all duration-700 hover:shadow-3xl hover:scale-105">
                                     <div className="relative w-full h-80 lg:h-full min-h-[400px] overflow-hidden">
@@ -139,7 +139,7 @@ const Blog = () => {
             {/* More Articles */}
             <div className="pb-28 px-4 md:px-16 lg:px-32">
                 <div className="max-w-7xl mx-auto">
-                    <h2 className="text-4xl sm:text-5xl text-gray-900 mb-16 border-b-4 border-orange-500/30 pb-4">More Articles</h2>
+                    <h2 className="text-4xl sm:text-5xl text-gray-900 mb-16 border-b-4 border-orange-500 pb-4">More Articles</h2>
                 </div>
                 <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10 auto-rows-fr">
                     {remainingPosts.length > 0 ? (
@@ -170,7 +170,7 @@ const Blog = () => {
                                             </span>
                                         </div>
                                         <h2
-                                            className="text-xl sm:text-2xl md:text-3xl text-gray-900 mb-3 group-hover:text-[#d7241d] transition-colors duration-500 leading-tight"
+                                            className="text-xl sm:text-2xl md:text-3xl text-gray-900 mb-3 group-hover:text-orange-500 transition-colors duration-500 leading-tight"
                                             dangerouslySetInnerHTML={{ __html: post.title.rendered }}
                                         />
                                         <div

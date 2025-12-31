@@ -25,7 +25,7 @@ const extractImages = (html = "") => {
 // 2. COMPONENT: Individual Article Card
 const ArticleCard = ({ p }) => (
   <div className="bg-white rounded-3xl overflow-hidden shadow-lg group transform hover:shadow-2xl hover:scale-105 transition-all duration-500 border border-gray-200/30 flex flex-col">
-    <div className="relative w-full h-64 overflow-hidden group-hover:border-t-4 group-hover:border-[#d7241d] transition-all duration-500">
+    <div className="relative w-full h-64 overflow-hidden group-hover:border-t-4 group-hover:border-orange-500 transition-all duration-500">
       {p.imageUrl ? (
         <Image
           src={p.imageUrl}
@@ -43,16 +43,16 @@ const ArticleCard = ({ p }) => (
       <div>
         <div className="flex items-center space-x-4 text-sm font-semibold text-gray-700 mb-4">
           <span className="flex items-center">
-            <FaCalendarAlt className="w-4 h-4 mr-2 text-[#d7241d]" />
+            <FaCalendarAlt className="w-4 h-4 mr-2 text-orange-500" />
             {new Date(p.date).toLocaleDateString()}
           </span>
           <span className="flex items-center">
-            <FaUserEdit className="w-4 h-4 mr-2 text-gray-600" />
+            <FaUserEdit className="w-4 h-4 mr-2 text-orange-500" />
             {p.authorName || "Author"}
           </span>
         </div>
         <h2
-          className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 group-hover:text-[#d7241d] transition-colors duration-500 leading-tight"
+          className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 group-hover:text-orange-500 transition-colors duration-500 leading-tight"
           dangerouslySetInnerHTML={{ __html: p.title.rendered }}
         />
         <div
@@ -62,7 +62,7 @@ const ArticleCard = ({ p }) => (
       </div>
       <Link
         href={`/blogs/${p.slug}`}
-        className="inline-flex items-center text-sm sm:text-base font-bold text-[#d7241d] hover:text-[#b41e17] transition-colors duration-500 mt-auto"
+        className="inline-flex items-center text-sm sm:text-base font-bold text-orange-500 hover:text-orange-600 transition-colors duration-500 mt-auto"
       >
         Read Article
         <FaArrowRight className="w-4 h-4 ml-2 transition-transform duration-500 group-hover:translate-x-2" />
@@ -86,11 +86,15 @@ export async function generateMetadata({ params }) {
       title: seo.og_title || seo.title || post.title.rendered.replace(/<[^>]*>/g, ""),
       description: seo.og_description || seo.description || post.excerpt.rendered.replace(/<[^>]*>/g, ""),
       keywords: seo.keywords?.filter(k => k && k.trim()).join(", "),
+      robots: { index: true, follow: true },
       openGraph: {
         title: seo.og_title || seo.title,
         description: seo.og_description || seo.description,
         images: seo.og_image || post._embedded?.["wp:featuredmedia"]?.[0]?.source_url || "",
         type: "article",
+      },
+        alternates: {
+        canonical: seo.canonical || seo.og_url,
       },
     };
   } catch (error) {
@@ -184,10 +188,10 @@ export default async function BlogDetailPage({ params }) {
 
         {/* Back Button */}
         <div className="px-6 md:px-16 lg:px-32 pt-10">
-          <Link href={`/blogs`} className="inline-flex items-center text-sm sm:text-base font-bold text-[#d7241d] hover:text-[#b41e17]">
+          <Link href={`/blogs`} className="inline-flex items-center text-sm sm:text-base font-bold text-orange-500 hover:text-orange-600">
             <FaHome className="mr-2" /> Back to Blog
           </Link>
-          <div className="mt-2 h-[2px] w-32 bg-[#d7241d] rounded"></div>
+          <div className="mt-2 h-[2px] w-32 bg-orange-500 rounded"></div>
         </div>
 
         {/* Article Body */}
@@ -199,7 +203,7 @@ export default async function BlogDetailPage({ params }) {
               </div>
             )}
 
-            <div className="prose prose-lg max-w-none mx-auto bg-gray-50 text-black p-8 rounded-xl border-l-4 border-[#d7241d] mb-10 shadow-sm">
+            <div className="prose prose-lg max-w-none mx-auto bg-gray-50 text-black p-8 rounded-xl border-l-4 border-orange-500 mb-10 shadow-sm">
               <div dangerouslySetInnerHTML={{ __html: textContent }} />
               {postImages.length > 0 && (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">
@@ -214,7 +218,7 @@ export default async function BlogDetailPage({ params }) {
           {/* More Articles Section */}
           {relatedPosts.length > 0 && (
             <div className="mt-20">
-              <h2 className="text-4xl sm:text-5xl text-gray-900 mb-16 border-b-4 border-[#d7241d]/30 pb-4">
+              <h2 className="text-4xl sm:text-5xl text-gray-900 mb-16 border-b-4 border-orange-500 pb-4">
                 More Articles
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-10">
