@@ -55,14 +55,14 @@ const AgentControlSection: React.FC = () => {
             */}
             <div className="rounded-2xl p-4  shadow-2xl shadow-orange-900/50 transform transition duration-500 hover:scale-[1.01]">
               <img
-                src={WORKFLOW_IMAGE_URL}
+                src="https://plus.unsplash.com/premium_photo-1682145730713-34bba6d3d14a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8dGVjaG5pY2FsfGVufDB8fDB8fHww"
                 alt="Visual workflow editor showing nodes for OpenAI GPT-4o, Conversation Memory, and routing logic"
                 className="w-full h-auto rounded-xl object-cover"
                 // Optional: Fallback for when the placeholder image doesn't load
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
                   target.onerror = null; // Prevents infinite loop
-                  target.src = "https://placehold.co/1000x800/1F172B/AAAAAA?text=Workflow+Visual+Unavailable";
+                  target.src = "https://plus.unsplash.com/premium_photo-1682145730713-34bba6d3d14a?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8dGVjaG5pY2FsfGVufDB8fDB8fHww";
                 }}
               />
             </div>

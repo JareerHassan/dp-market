@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import { Icons } from "@/components/icons";
 import { Input } from "@/components/ui/input";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
+import { useRouter } from "next/navigation";
 
 interface HeroBg {
   id: string;
@@ -18,21 +18,68 @@ interface HeroSectionProps {
 }
 
 const dynamicWords = ["Templates", "AI Bots", "Datasets", "Models", "Prompts"];
-const quickCategories = ["ChatGPT Bot", "AI Writer", "AI Templates", "Data Models", "Prompt Library"];
+
+const quickCategories = [
+  "ChatGPT Bot",
+  "AI Writer",
+  "AI Templates",
+  "Data Models",
+  "Prompt Library",
+];
 
 const HeroSection: React.FC<HeroSectionProps> = ({ heroBg }) => {
-  const background = heroBg || PlaceHolderImages.find((p) => p.id === "hero-background");
+  const router = useRouter();
+
+  const background =
+    heroBg || PlaceHolderImages.find((p) => p.id === "hero-background");
 
   const [searchTerm, setSearchTerm] = useState("");
   const [typedWord, setTypedWord] = useState("");
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [forward, setForward] = useState(true);
 
-  const [imgLoaded, setImgLoaded] = useState(false);
-
   const typingRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Typing effect
+  // SEARCH HANDLER - Your original logic preserved
+  const handleSearch = () => {
+    const term = searchTerm.trim().toLowerCase();
+
+    if (!term) return;
+
+    // Your perfect hard-coded routes (unchanged)
+    if (term === "chatgpt bot") router.push("/chatbot");
+    else if (term === "ai writer") router.push("/chatbot");
+    else if (term === "ai templates") router.push("/products");
+    else if (term === "data models") router.push("/categories");
+    else if (term === "prompt library") router.push("/chatbot");
+    else {
+      // FIXED: Manual search - safely encoded and goes to products with search query
+      router.push(`/products?search=${encodeURIComponent(term)}`);
+    }
+  };
+
+  // ENTER PRESS SEARCH
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") handleSearch();
+  };
+
+  // Quick category buttons - now consistent with search behavior
+  const handleQuickCategory = (category: string) => {
+    const term = category.toLowerCase();
+    setSearchTerm(category); // Optional: fills the input
+
+    // Match your hard-coded logic
+    if (term === "chatgpt bot") router.push("/chatbot");
+    else if (term === "ai writer") router.push("/chatbot");
+    else if (term === "ai templates") router.push("/products");
+    else if (term === "data models") router.push("/categories");
+    else if (term === "prompt library") router.push("/chatbot");
+    else {
+      router.push(`/products?search=${encodeURIComponent(term)}`);
+    }
+  };
+
+  // Typing Animation
   useEffect(() => {
     const currentWord = dynamicWords[currentWordIndex];
     let charIndex = forward ? 0 : currentWord.length;
@@ -43,9 +90,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroBg }) => {
           setTypedWord(currentWord.slice(0, charIndex));
           charIndex++;
           if (charIndex > currentWord.length) {
-            typingRef.current = setTimeout(() => setForward(false), 1000);
+            typingRef.current = setTimeout(() => setForward(false), 1500);
           } else {
-            typingRef.current = setTimeout(type, 150);
+            typingRef.current = setTimeout(type, 120);
           }
         }
       } else {
@@ -55,24 +102,23 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroBg }) => {
           if (charIndex < 0) {
             setForward(true);
             setCurrentWordIndex((prev) => (prev + 1) % dynamicWords.length);
+          } else {
+            typingRef.current = setTimeout(type, 80);
           }
-          typingRef.current = setTimeout(type, 100);
         }
       }
     };
 
-    type();
+    typingRef.current = setTimeout(type, forward ? 120 : 80);
+
     return () => {
       if (typingRef.current) clearTimeout(typingRef.current);
     };
   }, [currentWordIndex, forward]);
 
   return (
-    <section className="w-full  flex flex-col items-center justify-center text-center px-4 relative">
-
-      {/* Content */}
-      <div className="relative z-10 max-w-3xl pb-24 pt-32"
-      >
+    <section className="w-full flex flex-col items-center justify-center text-center px-4 relative">
+      <div className="relative z-10 max-w-3xl pb-24 pt-32">
         <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight drop-shadow-lg">
           Explore the World <br />
           of <span className="text-orange-500">{typedWord}</span>
@@ -86,22 +132,22 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroBg }) => {
             placeholder="Search AI models, prompts, datasets..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full py-6 pr-12 text-lg focus:shadow-none  rounded-lg border border-gray-700 placeholder-gray-300 focus:border-orange-500 focus:ring-0 dark:bg-gray-700/50"
+            onKeyDown={handleKeyPress}
+            className="w-full py-6 pr-12 text-lg rounded-lg border border-gray-700 placeholder-gray-300 focus:border-orange-500"
           />
-
-
-          <Icons.Search className="absolute right-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-
+          <Icons.Search
+            onClick={handleSearch}
+            className="absolute right-4 top-1/2 -translate-y-1/2 h-6 w-6 text-gray-400 cursor-pointer hover:text-orange-500 transition-colors"
+          />
         </div>
 
-
-        {/* Categories */}
-        <div className="mt-8 flex flex-wrap justify-center gap-2">
+        {/* Quick Categories */}
+        <div className="mt-8 flex flex-wrap justify-center gap-3">
           {quickCategories.map((cat) => (
             <button
               key={cat}
-              onClick={() => setSearchTerm(cat)}
-              className="px-3 py-1 text-sm border border-1 border-gray-700 rounded-lg  dark:bg-transparent dark:hover:bg-[#3c1511] hover:border-orange-500 transition-all duration-300"
+              onClick={() => handleQuickCategory(cat)}
+              className="px-4 py-2 text-sm font-medium border border-gray-700 rounded-lg hover:border-orange-500 hover:bg-orange-500/10 transition-all"
             >
               {cat}
             </button>
@@ -109,24 +155,16 @@ const HeroSection: React.FC<HeroSectionProps> = ({ heroBg }) => {
         </div>
       </div>
 
-      <div
-        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-[120vw] blur-3xl rounded-full"
-        style={{
-          background: "var(--bg-gradient)",
-        }}
-      />
-
-
       <style jsx>{`
-    .animate-blink {
-      animation: blink 1s step-start infinite;
-    }
-    @keyframes blink {
-      50% { opacity: 0; }
-    }
-  `}</style>
-    </section >
-
+        .animate-blink {
+          animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0; }
+        }
+      `}</style>
+    </section>
   );
 };
 

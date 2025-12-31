@@ -54,7 +54,7 @@ export default function HomePage() {
               ))}
             </div>
             <div className="mt-12 text-center">
-              <Link href="/explore">
+              <Link href="/products">
                 <Button className='bg-gradient-to-r from-orange-500 via-pink-500 to-purple-200' variant="outline" size="lg">
                   Explore All Products <Icons.ArrowRight className="ml-2 h-4 w-4" />
                 </Button>

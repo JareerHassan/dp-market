@@ -12,6 +12,7 @@ export type Product = {
   gallery: string[];
   sellerId: string;
   createdAt: string;
+   link?: string;
 };
 
 export type Category = {

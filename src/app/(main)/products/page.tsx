@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import axios from "axios";
 import { categories } from "@/lib/dummy-data";
 import { ProductCard } from "@/components/product-card";
@@ -16,6 +16,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import { useSearchParams } from "next/navigation"; // ← Added this import
 
 const dynamicWords = ["Templates", "AI Bots", "Datasets", "Models", "Prompts"];
 
@@ -26,9 +27,11 @@ interface ApiProduct {
   image: string;
   link?: string;
   features: string[];
+  price?: number;
+  rating?: number;
+  category?: string;
   createdAt: string;
   updatedAt: string;
-  __v?: number;
 }
 
 export default function ExplorePage() {
@@ -38,10 +41,29 @@ export default function ExplorePage() {
   const typingRef = useRef<NodeJS.Timeout | null>(null);
 
   const [products, setProducts] = useState<ApiProduct[]>([]);
+  const [allProducts, setAllProducts] = useState<ApiProduct[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Typing Animation
+  // Filter States
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [priceMin, setPriceMin] = useState("");
+  const [priceMax, setPriceMax] = useState("");
+  const [selectedRatings, setSelectedRatings] = useState<number[]>([]);
+  const [sortBy, setSortBy] = useState("newest");
+
+  // ← NEW: Read search query from URL (Next.js App Router)
+  const searchParams = useSearchParams();
+  const urlSearchQuery = searchParams.get("search");
+
+  useEffect(() => {
+    if (urlSearchQuery && urlSearchQuery.trim() !== "") {
+      setSearchQuery(urlSearchQuery.trim());
+    }
+  }, [urlSearchQuery]);
+
+  // Typing Animation Effect
   useEffect(() => {
     const currentWord = dynamicWords[currentWordIndex];
     let charIndex = forward ? 0 : currentWord.length;
@@ -82,6 +104,7 @@ export default function ExplorePage() {
         const response = await axios.get<ApiProduct[]>(
           "https://marketplacebackend.oxmite.com/api/products"
         );
+        setAllProducts(response.data);
         setProducts(response.data);
         setError(null);
       } catch (err) {
@@ -106,6 +129,98 @@ export default function ExplorePage() {
     return `https://marketplacebackend.oxmite.com/${normalized}`;
   };
 
+  // Filter & Sort Logic
+  const filteredAndSortedProducts = useMemo(() => {
+    let filtered = [...allProducts];
+
+    // Search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      filtered = filtered.filter(
+        (p) =>
+          p.name.toLowerCase().includes(query) ||
+          p.description.toLowerCase().includes(query) ||
+          p.features.some((f) => f.toLowerCase().includes(query))
+      );
+    }
+
+    // Category filter
+    if (selectedCategories.length > 0) {
+      filtered = filtered.filter((p) =>
+        p.category ? selectedCategories.includes(p.category) : false
+      );
+    }
+
+    // Price filter
+    if (priceMin || priceMax) {
+      filtered = filtered.filter((p) => {
+        const price = p.price ?? 0;
+        const min = priceMin ? parseFloat(priceMin) : -Infinity;
+        const max = priceMax ? parseFloat(priceMax) : Infinity;
+        return price >= min && price <= max;
+      });
+    }
+
+    // Rating filter
+    if (selectedRatings.length > 0) {
+      filtered = filtered.filter((p) => {
+        const rating = p.rating ?? 0;
+        return selectedRatings.some((r) => rating >= r);
+      });
+    }
+
+    // Sorting
+    const sorted = [...filtered].sort((a, b) => {
+      switch (sortBy) {
+        case "newest":
+          return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        case "popularity":
+          return 0;
+        case "rating":
+          return (b.rating ?? 0) - (a.rating ?? 0);
+        case "price-asc":
+          return (a.price ?? 0) - (b.price ?? 0);
+        case "price-desc":
+          return (b.price ?? 0) - (a.price ?? 0);
+        default:
+          return 0;
+      }
+    });
+
+    return sorted;
+  }, [allProducts, searchQuery, selectedCategories, priceMin, priceMax, selectedRatings, sortBy]);
+
+  // Update displayed products
+  useEffect(() => {
+    setProducts(filteredAndSortedProducts);
+  }, [filteredAndSortedProducts]);
+
+  // Handlers
+  const handleCategoryChange = (categoryName: string, checked: boolean) => {
+    if (checked) {
+      setSelectedCategories((prev) => [...prev, categoryName]);
+    } else {
+      setSelectedCategories((prev) => prev.filter((c) => c !== categoryName));
+    }
+  };
+
+  const handleRatingChange = (rating: number, checked: boolean) => {
+    if (checked) {
+      setSelectedRatings((prev) => [...prev, rating]);
+    } else {
+      setSelectedRatings((prev) => prev.filter((r) => r !== rating));
+    }
+  };
+
+  const clearAllFilters = () => {
+    setSearchQuery("");
+    setSelectedCategories([]);
+    setPriceMin("");
+    setPriceMax("");
+    setSelectedRatings([]);
+    setSortBy("newest");
+  };
+
   return (
     <div className="container mx-auto px-4 py-8 md:py-12">
       {/* Hero Header */}
@@ -124,6 +239,8 @@ export default function ExplorePage() {
             type="search"
             placeholder="Search by name, tag, or description..."
             className="w-full py-6 pl-12 pr-4 text-lg rounded-xl"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
           <Icons.Search className="absolute left-4 top-1/2 -translate-y-1/2 h-6 w-6 text-muted-foreground" />
         </div>
@@ -140,7 +257,11 @@ export default function ExplorePage() {
                 <h3 className="text-lg font-semibold mb-3">Category</h3>
                 {categories.map((category) => (
                   <div key={category.id} className="flex items-center space-x-3 mb-3">
-                    <Checkbox id={`cat-${category.id}`} />
+                    <Checkbox
+                      id={`cat-${category.id}`}
+                      checked={selectedCategories.includes(category.name)}
+                      onCheckedChange={(checked) => handleCategoryChange(category.name, checked as boolean)}
+                    />
                     <Label
                       htmlFor={`cat-${category.id}`}
                       className="text-sm font-medium cursor-pointer hover:text-primary transition-colors"
@@ -154,8 +275,20 @@ export default function ExplorePage() {
               <div>
                 <h3 className="text-lg font-semibold mb-3">Price Range</h3>
                 <div className="flex gap-3">
-                  <Input type="number" placeholder="Min" className="text-sm" />
-                  <Input type="number" placeholder="Max" className="text-sm" />
+                  <Input
+                    type="number"
+                    placeholder="Min"
+                    value={priceMin}
+                    onChange={(e) => setPriceMin(e.target.value)}
+                    className="text-sm"
+                  />
+                  <Input
+                    type="number"
+                    placeholder="Max"
+                    value={priceMax}
+                    onChange={(e) => setPriceMax(e.target.value)}
+                    className="text-sm"
+                  />
                 </div>
               </div>
 
@@ -163,7 +296,11 @@ export default function ExplorePage() {
                 <h3 className="text-lg font-semibold mb-3">Rating</h3>
                 {[4, 3, 2, 1].map((rating) => (
                   <div key={rating} className="flex items-center space-x-3 mb-3">
-                    <Checkbox id={`rating-${rating}`} />
+                    <Checkbox
+                      id={`rating-${rating}`}
+                      checked={selectedRatings.includes(rating)}
+                      onCheckedChange={(checked) => handleRatingChange(rating, checked as boolean)}
+                    />
                     <Label
                       htmlFor={`rating-${rating}`}
                       className="flex items-center gap-1 cursor-pointer text-sm"
@@ -185,7 +322,7 @@ export default function ExplorePage() {
               <Button variant="default" className="w-full">
                 Apply Filters
               </Button>
-              <Button variant="ghost" className="w-full">
+              <Button variant="ghost" className="w-full" onClick={clearAllFilters}>
                 Clear All
               </Button>
             </div>
@@ -203,7 +340,7 @@ export default function ExplorePage() {
                 : `${products.length} product${products.length !== 1 ? "s" : ""} found`}
             </p>
 
-            <Select defaultValue="newest">
+            <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger className="w-full sm:w-[180px]">
                 <SelectValue placeholder="Sort by" />
               </SelectTrigger>
@@ -235,8 +372,8 @@ export default function ExplorePage() {
 
           {!loading && !error && products.length === 0 && (
             <div className="text-center py-20 text-muted-foreground">
-              <p className="text-2xl mb-4">No products found yet.</p>
-              <p>Be the first to add one!</p>
+              <p className="text-2xl mb-4">No products found.</p>
+              <p>Try adjusting your filters.</p>
             </div>
           )}
 
@@ -262,7 +399,6 @@ export default function ExplorePage() {
             </div>
           )}
 
-          {/* Load More (for future pagination) */}
           <div className="mt-16 text-center">
             <Button variant="outline" size="lg">
               Load More Products

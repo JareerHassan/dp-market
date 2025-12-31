@@ -46,11 +46,11 @@ export default async function ProductPage({ params }: { params: { id: string } }
     ? `https://marketplacebackend.oxmite.com/${product.image.replace(/\\/g, '/')}`
     : '/placeholder.jpg';
 
-const demoLink = product.link
-  ? product.link.trim().startsWith("http")
-    ? product.link.trim()
-    : `https://${product.link.trim()}`
-  : null;
+  const demoLink = product.link
+    ? product.link.trim().startsWith("http")
+      ? product.link.trim()
+      : `https://${product.link.trim()}`
+    : null;
 
   const relatedProducts = allProducts
     .filter((p) => p._id !== product._id)
@@ -58,7 +58,7 @@ const demoLink = product.link
 
   return (
     <div className="container mx-auto px-4 py-8 md:py-12">
-      <Link href='/explore' className="inline-flex mb-5 items-center gap-2 px-5 py-2.5 rounded-xl border border-border hover:border-primary hover:text-primary transition-all duration-300 font-medium">
+      <Link href='/products' className="inline-flex mb-5 items-center gap-2 px-5 py-2.5 rounded-xl border border-border hover:border-primary hover:text-primary transition-all duration-300 font-medium">
         ← Back to Explore
       </Link>
       <div className="space-y-8">
@@ -80,7 +80,7 @@ const demoLink = product.link
               <h1 className="text-4xl md:text-6xl font-bold tracking-tight">
                 {product.name}
               </h1>
-             
+
             </div>
 
             <p className="text-lg text-muted-foreground">
@@ -112,9 +112,9 @@ const demoLink = product.link
                 </Button>
               )}
               <Button size="lg" variant="default" asChild>
-                <a href="mailto:contact@example.com?subject=Inquiry%20about%20your%20service">
-                  Contact for Pricing
-                </a>
+                <Link href='/contact' >
+                  Buy Product
+                </Link>
               </Button>
             </div>
           </div>

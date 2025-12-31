@@ -20,7 +20,7 @@ export default function HoverProductCards() {
             image:
                 "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=800&q=80",
             hoverImage:
-                "https://images.unsplash.com/photo-1508612761958-e931d843bdd3?auto=format&fit=crop&w=800&q=80",
+                "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=800&q=80",
         },
         {
             id: "2",
@@ -31,15 +31,7 @@ export default function HoverProductCards() {
             hoverImage:
                 "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80",
         },
-        {
-            id: "3",
-            downloads: "12M",
-            name: "Speech-to-Text Pro",
-            image:
-                "https://images.unsplash.com/photo-1581091870627-3ca5d04779d8?auto=format&fit=crop&w=800&q=80",
-            hoverImage:
-                "https://images.unsplash.com/photo-1580894732444-8ecdedecbfff?auto=format&fit=crop&w=800&q=80",
-        },
+       
         {
             id: "4",
             downloads: "12M",
@@ -67,15 +59,7 @@ export default function HoverProductCards() {
             hoverImage:
                 "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=800&q=80",
         },
-        {
-            id: "7",
-            downloads: "12M",
-            name: "Data Visualizer",
-            image:
-                "https://images.unsplash.com/photo-1555949963-aa79dcee30d0?auto=format&fit=crop&w=800&q=80",
-            hoverImage:
-                "https://images.unsplash.com/photo-1517142089942-ba376ce32a0a?auto=format&fit=crop&w=800&q=80",
-        },
+       
         {
             id: "8",
             downloads: "12M",
@@ -101,7 +85,7 @@ export default function HoverProductCards() {
             image:
                 "https://images.unsplash.com/photo-1511379938547-c1f69419868d?auto=format&fit=crop&w=800&q=80",
             hoverImage:
-                "https://images.unsplash.com/photo-1521038199265-0847df5120b5?auto=format&fit=crop&w=800&q=80",
+                "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=800&q=80",
         },
     ];
 
